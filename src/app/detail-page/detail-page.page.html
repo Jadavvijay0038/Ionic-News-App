@@ -1,0 +1,23 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>Source: {{Data.source.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+<ion-card>
+  <img alt="{{Data.title}}" src="{{Data.urlToImage}}" />
+  <ion-card-header>
+    <ion-card-title>{{Data.title}}</ion-card-title>
+    <ion-card-subtitle>{{Data.publishedAt | date:'medium'}}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>{{Data.description}}</p>
+  </ion-card-content>
+    <ion-button fill="clear">Read More..</ion-button>
+</ion-card>
+</ion-content>
