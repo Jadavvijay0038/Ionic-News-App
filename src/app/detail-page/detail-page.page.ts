@@ -12,8 +12,7 @@ import { Article } from '../providers/api-call.service';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class DetailPagePage implements OnInit {
-
-  Data:any
+  Data: any
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
@@ -28,4 +27,7 @@ export class DetailPagePage implements OnInit {
     console.log(this.Data)
   }
 
+  NewsUrl() {
+    window.open(this.Data.url, '_system', 'location=yes');
+  }
 }
