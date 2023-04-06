@@ -1,70 +1,64 @@
 import { Component, OnInit } from '@angular/core';
-import { InfiniteScrollCustomEvent, IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { ApiCallService, Article } from '../providers/api-call.service';
 import { CommonModule } from '@angular/common';
 import { DetailPagePage } from '../detail-page/detail-page.page';
+import { BehaviorSubject, take, tap } from 'rxjs';
+
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [IonicModule, CommonModule,],
 })
 export class Tab1Page implements OnInit {
 
-  showskelton: boolean = true
-  Articals: Article[] = [];
+  showSkeleton: boolean = true
+  articles$ = new BehaviorSubject<Article[]>([]);
   page: number = 1
   pageSize: number = 10
   constructor(private api: ApiCallService, private modalCtrl: ModalController) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.api.getdata(this.pageSize, this.page).subscribe((Response: any) => {
-        this.Articals = Response
-        this.showskelton = false
-      })
-    }, 2000);
+    this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      this.articles$.next(response);
+      this.showSkeleton = false;
+    })
+    ).subscribe();
   }
 
-  async openmodel(_t79: Article) {
+  async openmodel(article: Article) {
     const modal = await this.modalCtrl.create({
       component: DetailPagePage,
       componentProps: {
-        Data: _t79
-      }
+        Data: article,
+      },
     });
-
     modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    console.log(_t79);
   }
 
   onIonInfinite(infiniteScroll: any) {
-    setTimeout(() => {
-      this.Loadmore();
-      (infiniteScroll as InfiniteScrollCustomEvent).target.complete();
-    }, 500);
+    this.Loadmore();
+    infiniteScroll.target.complete();
   }
 
-
   Loadmore() {
-    this.page++
-    this.api.getdata(this.pageSize, this.page).subscribe((Response: Article[]) => {
-      console.log(Response)
-      this.Articals.push(...Response)
+    this.page++;
+    this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      const currentArticles = this.articles$.getValue();
+      this.articles$.next([...currentArticles, ...response]);
     })
+    ).subscribe();
   }
 
   handleRefresh(event: any) {
-    this.page++
-    setTimeout(() => {
-      this.api.getdata(this.pageSize, this.page).subscribe((Response: Article[]) => {
-        console.log(Response)
-        this.Articals = Response
-      })
+    this.page++;
+    this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      this.articles$.next(response);
       event.target.complete();
-    }, 2000);
-  };
+    })
+    ).subscribe();
+  }
 }

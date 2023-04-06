@@ -12,9 +12,9 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngIf="showskelton">
+  <ng-container *ngIf="showSkeleton">
     <ion-list>
-      <ion-item *ngFor="let item of [].constructor(5)" class="ion-activatable ripple-parent rectangle">
+      <ion-item *ngFor="let item of [].constructor(10)" class="ion-activatable ripple-parent rectangle">
         <ion-thumbnail slot="start">
           <ion-skeleton-text></ion-skeleton-text>
         </ion-thumbnail>
@@ -34,7 +34,7 @@
   </ng-container>
 
   <ion-list tapabble>
-    <ion-item *ngFor="let item of Articals" (click)="openmodel(item)">
+    <ion-item *ngFor="let item of articles$ | async" (click)="openmodel(item)">
       <ion-thumbnail slot="start">
         <img src="{{item.urlToImage}}" alt="" style="width: 100%; height: 100%">
       </ion-thumbnail>
@@ -45,7 +45,7 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-infinite-scroll threshold="10px" (ionInfinite)="onIonInfinite($event)" [hidden]="Articals.length < pageSize">
+  <ion-infinite-scroll threshold="10px" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

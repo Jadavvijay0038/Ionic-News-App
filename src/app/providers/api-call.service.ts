@@ -1,42 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Root {
-  status: string
-  totalResults: number
-  articles: Article[]
+  status: string;
+  totalResults: number;
+  articles: Article[];
 }
 
 export interface Article {
-  source: Source
-  author?: string
-  title: string
-  description: string
-  url: string
-  urlToImage: string
-  publishedAt: string
-  content?: string
+  id: any;
+  source: Source;
+  author?: string;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content?: string;
 }
 
 export interface Source {
-  id?: string
-  name: string
+  id?: string;
+  name: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiCallService {
+  private apiKey = 'f8c7a8a4e287411bb08247db4158ea52';
 
-  constructor(private _http:HttpClient) { }
-  url = 'https://newsapi.org/v2/top-headlines?';
-  // 'q=Apple&' +
-  // 'from=2023-04-04&' +
-  // 'sortBy=popularity&' +
-  // 'apiKey=f8c7a8a4e287411bb08247db4158ea52';
-  getdata(size:number,page:number){
-    return this._http.get<Root>(this.url + 'country=in&' + '&pageSize=' + size + '&page=' + page + '&apiKey=f8c7a8a4e287411bb08247db4158ea52').pipe(map((Resp:Root) => Resp.articles))
+  private url = 'https://newsapi.org/v2/top-headlines?country=in';
+
+  constructor(private http: HttpClient) { }
+
+  getData(pageSize: number, page: number): Observable<Article[]> {
+    const apiUrl = `${this.url}&pageSize=${pageSize}&page=${page}&apiKey=${this.apiKey}`;
+    return this.http.get<Root>(apiUrl).pipe(
+      map((response: Root) => response.articles)
+    );
   }
+  
 }
