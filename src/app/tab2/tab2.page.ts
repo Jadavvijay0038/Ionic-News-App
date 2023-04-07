@@ -11,7 +11,7 @@ import { DetailPagePage } from '../detail-page/detail-page.page';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule, CommonModule,FormsModule]
+  imports: [IonicModule, ReactiveFormsModule, CommonModule, FormsModule]
 })
 export class Tab2Page implements OnInit {
   presentPopover($event: MouseEvent) {
@@ -20,7 +20,7 @@ export class Tab2Page implements OnInit {
 
   SearchText!: FormControl
   articles$ = new BehaviorSubject<Article[]>([]);
-  showoptions:boolean = false;
+  showoptions: boolean = false;
   constructor(private api: ApiCallService, private modalCtrl: ModalController) {
     this.SearchText = new FormControl('', Validators.required)
   }

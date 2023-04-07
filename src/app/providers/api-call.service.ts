@@ -44,7 +44,7 @@ export class ApiCallService {
     );
   }
 
-  searchNews(Searchkey:string) {
+  searchNews(Searchkey: string) {
     const apiUrl = `${this.url}everything?q=${Searchkey}&apiKey=${this.apiKey}`;
     return this.http.get<Root>(apiUrl).pipe(
       map((response: Root) => response.articles)

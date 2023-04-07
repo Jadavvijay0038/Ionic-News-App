@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-card *ngIf="Data">
-    <img [src]="Data.urlToImage" />
+    <img [src]="Data.urlToImage"  onerror="this.onerror=null; this.src='../assets/icon/37375020.jpg'" />
     <ion-card-header>
       <ion-card-title>{{Data.title}}</ion-card-title>
       <ion-card-subtitle>{{Data.publishedAt | date:'medium'}}</ion-card-subtitle>
