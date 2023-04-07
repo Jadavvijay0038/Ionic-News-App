@@ -37,4 +37,8 @@
       </ion-label>
     </ion-item>
   </ion-list>
+
+  <ion-loading *ngIf="isLoading" message="Loading..." [duration]="3000"></ion-loading>
+
+
 </ion-content>
