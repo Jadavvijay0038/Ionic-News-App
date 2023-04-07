@@ -19,10 +19,12 @@ export class Tab1Page implements OnInit {
   articles$ = new BehaviorSubject<Article[]>([]);
   page: number = 1
   pageSize: number = 10
+  noMoreNews: boolean = false;
   constructor(private api: ApiCallService, private modalCtrl: ModalController) { }
 
   ngOnInit(): void {
     this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      this.noMoreNews = response.length == 0 ? true : false
       this.articles$.next(response);
       this.showSkeleton = false;
     })
@@ -47,6 +49,7 @@ export class Tab1Page implements OnInit {
   Loadmore() {
     this.page++;
     this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      this.noMoreNews = response.length == 0 ? true : false
       const currentArticles = this.articles$.getValue();
       this.articles$.next([...currentArticles, ...response]);
     })
@@ -56,6 +59,7 @@ export class Tab1Page implements OnInit {
   handleRefresh(event: any) {
     this.page++;
     this.api.getData(this.pageSize, this.page).pipe(take(1), tap((response: Article[]) => {
+      this.noMoreNews = response.length == 0 ? true : false
       this.articles$.next(response);
       event.target.complete();
     })
