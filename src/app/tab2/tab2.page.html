@@ -1,12 +1,41 @@
-<ion-header [translucent]="true">
+<ion-header collapse="fade">
+  <ion-toolbar slot="end">
+    <ion-title>Search</ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="click-trigger"><ion-icon name="options-outline"></ion-icon></ion-button>
+      <ion-popover trigger="click-trigger" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-radio-group [allowEmptySelection]="true" [(ngModel)]="showoptions">
+              <ion-radio value="showoptions">Advance Search Options</ion-radio><br />
+            </ion-radio-group>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+    </ion-buttons>
+  </ion-toolbar>
   <ion-toolbar>
-    <ion-title>
-      Search News Articles
-    </ion-title>
+    <form>
+      <ion-searchbar [formControl]="SearchText" color="light" [debounce]="1000" mode="ios"
+        animated="true"></ion-searchbar>
+    </form>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-
+  <p *ngIf="showoptions">Adnvace option</p>
+  <ion-list tapabble lines="full">
+    <ion-item *ngFor="let item of articles$ | async" (click)="openmodel(item)">
+      <ion-thumbnail slot="start">
+        <img src="{{item.urlToImage}}" onerror="this.onerror=null; this.src='../assets/icon/37375020.jpg'" alt=""
+          style="width: 100%; height: 100%">
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{item.title}}</h3>
+        <p>{{item.description}}</p>
+        <p>{{item.publishedAt | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

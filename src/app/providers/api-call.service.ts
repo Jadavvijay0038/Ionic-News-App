@@ -30,17 +30,24 @@ export interface Source {
   providedIn: 'root'
 })
 export class ApiCallService {
+
   private apiKey = 'f8c7a8a4e287411bb08247db4158ea52';
 
-  private url = 'https://newsapi.org/v2/top-headlines?country=in';
+  private url = 'https://newsapi.org/v2/';
 
   constructor(private http: HttpClient) { }
 
   getData(pageSize: number, page: number): Observable<Article[]> {
-    const apiUrl = `${this.url}&pageSize=${pageSize}&page=${page}&apiKey=${this.apiKey}`;
+    const apiUrl = `${this.url}top-headlines?country=in&pageSize=${pageSize}&page=${page}&apiKey=${this.apiKey}`;
     return this.http.get<Root>(apiUrl).pipe(
       map((response: Root) => response.articles)
     );
   }
-  
+
+  searchNews(Searchkey:string) {
+    const apiUrl = `${this.url}everything?q=${Searchkey}&apiKey=${this.apiKey}`;
+    return this.http.get<Root>(apiUrl).pipe(
+      map((response: Root) => response.articles)
+    );
+  }
 }

@@ -33,10 +33,11 @@
       </ion-item>
     </ion-list>
   </ng-container>
-  <ion-list tapabble lines="full">
+
+  <ion-list tapabble lines="full" >
     <ion-item *ngFor="let item of articles$ | async" (click)="openmodel(item)">
       <ion-thumbnail slot="start">
-        <img src="{{item.urlToImage}}" alt="" style="width: 100%; height: 100%">
+        <img src="{{item.urlToImage}}" onerror="this.onerror=null; this.src='../assets/icon/37375020.jpg'" alt="" style="width: 100%; height: 100%">
       </ion-thumbnail>
       <ion-label>
         <h3>{{item.title}}</h3>
@@ -45,6 +46,7 @@
       </ion-label>
     </ion-item>
   </ion-list>
+
   <ion-infinite-scroll threshold="10px" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
